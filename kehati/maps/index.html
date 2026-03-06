@@ -12,10 +12,36 @@
                 max-width: 95vw;
                 height: 700px;
             }
+
+            #coords {
+                position: absolute;
+                bottom: 10px;
+                left: 10px;
+                background: rgba(0, 0, 0, 0.6);
+                color: white;
+                padding: 4px 8px;
+                font-size: 12px;
+                border-radius: 4px;
+                font-family: monospace;
+            }
         </style>
     </head>
 
     <body>
+        <div id="map"></div>
+        <div style="margin-bottom: 10px">
+            Nama Lokasi
+            <input id="nameInput" />
+
+            Latitude
+            <input id="latInput" readonly />
+
+            Longitude
+            <input id="lngInput" readonly />
+
+            <button onclick="saveLocation()">Simpan</button>
+        </div>
+
         <div id="map"></div>
 
         <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>

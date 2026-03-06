@@ -49,13 +49,45 @@ const CONFIG = {
     },
 };
 
+const savedLocations = [];
+let tempMarker = null;
+let mapInstance = null;
+
 (function () {
     const map = L.map("map", {
         zoomSnap: 0.5,
         wheelPxPerZoomLevel: 80,
     });
 
+    mapInstance = map;
+
+    map.getContainer().style.outline = "none";
+    map.getContainer().tabIndex = -1;
+
     L.tileLayer(CONFIG.tileUrl, CONFIG.tileOptions).addTo(map);
+
+    map.on("click", function (e) {
+        const lat = e.latlng.lat.toFixed(6);
+        const lng = e.latlng.lng.toFixed(6);
+
+        document.getElementById("latInput").value = lat;
+        document.getElementById("lngInput").value = lng;
+
+        if (tempMarker) {
+            map.removeLayer(tempMarker);
+        }
+
+        tempMarker = L.marker([lat, lng], {
+            draggable: true,
+        }).addTo(map);
+
+        tempMarker.on("dragend", function () {
+            const pos = tempMarker.getLatLng();
+
+            document.getElementById("latInput").value = pos.lat.toFixed(6);
+            document.getElementById("lngInput").value = pos.lng.toFixed(6);
+        });
+    });
 
     fetch(CONFIG.topojsonUrl)
         .then((res) => {
@@ -136,3 +168,37 @@ const CONFIG = {
             map.setView(CONFIG.fallbackView.center, CONFIG.fallbackView.zoom);
         });
 })();
+
+function saveLocation() {
+    const name = document.getElementById("nameInput").value;
+    const lat = parseFloat(document.getElementById("latInput").value);
+    const lng = parseFloat(document.getElementById("lngInput").value);
+
+    if (!lat || !lng) {
+        alert("Klik map dulu untuk menentukan lokasi");
+        return;
+    }
+
+    const data = {
+        name: name,
+        lat: lat,
+        lng: lng,
+    };
+
+    savedLocations.push(data);
+
+    const marker = L.marker([lat, lng]).addTo(mapInstance);
+
+    marker.bindPopup(`
+        <b>${name}</b><br>
+        ${lat}, ${lng}
+    `);
+
+    tempMarker = null;
+
+    document.getElementById("nameInput").value = "";
+    document.getElementById("latInput").value = "";
+    document.getElementById("lngInput").value = "";
+
+    console.log(savedLocations);
+}
