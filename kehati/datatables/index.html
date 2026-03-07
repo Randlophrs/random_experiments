@@ -14,6 +14,7 @@
             href="https://cdn.datatables.net/columncontrol/1.2.0/css/columnControl.dataTables.css"
         />
 
+        <!-- requirements -->
         <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
         <script src="https://cdn.datatables.net/2.3.7/js/dataTables.js"></script>
         <script src="https://cdn.datatables.net/columncontrol/1.2.0/js/dataTables.columnControl.js"></script>
@@ -501,56 +502,5 @@
             </tfoot>
         </table>
     </body>
-    <script>
-        new DataTable("#example", {
-            // columnControl: [
-            //     "order",
-            //     ["searchText", "orderDesc", "orderAsc", "orderRemove"],
-            // ],
-
-            ordering: {
-                indicators: false,
-                handler: false,
-            },
-
-            columns: [
-                {
-                    columnControl: [
-                        "order",
-                        ["searchText", "orderDesc", "orderAsc", "orderRemove"],
-                    ],
-                },
-                {
-                    columnControl: [
-                        "order",
-                        ["searchList", "orderDesc", "orderAsc", "orderRemove"],
-                    ],
-                },
-                {
-                    columnControl: [
-                        "order",
-                        ["searchText", "orderDesc", "orderAsc", "orderRemove"],
-                    ],
-                },
-                {
-                    columnControl: [
-                        "order",
-                        ["searchText", "orderDesc", "orderAsc", "orderRemove"],
-                    ],
-                },
-                {
-                    columnControl: [
-                        "order",
-                        ["searchText", "orderDesc", "orderAsc", "orderRemove"],
-                    ],
-                },
-                {
-                    columnControl: [
-                        "order",
-                        ["searchText", "orderDesc", "orderAsc", "orderRemove"],
-                    ],
-                },
-            ],
-        });
-    </script>
+    <script src="script.js"></script>
 </html>
