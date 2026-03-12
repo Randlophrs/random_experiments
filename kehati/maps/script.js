@@ -103,8 +103,62 @@ let mapInstance = null;
             const Layer = L.geoJSON(geoData, {
                 style: CONFIG.LayerStyle,
                 onEachFeature: (f, l) => {
-                    const name = f.properties?.name || "Area";
-                    l.bindTooltip(name, { direction: "center" });
+                    const kab = f.properties?.kabkot;
+                    const prov = f.properties?.provinsi;
+
+                    l.bindTooltip(`${kab}`, { direction: "center" });
+
+                    l.on("click", function (e) {
+                        const lat = e.latlng.lat;
+                        const lng = e.latlng.lng;
+
+                        fetch(
+                            `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=id`,
+                        )
+                            .then((res) => res.json())
+                            .then((data) => {
+                                const a = data.address;
+
+                                const provinsi =
+                                    a.state || a.province || a.region;
+
+                                const kabupaten_kota =
+                                    a.county ||
+                                    a.city ||
+                                    a.regency ||
+                                    a.municipality;
+
+                                const kecamatan =
+                                    a.suburb ||
+                                    a.city_district ||
+                                    a.district ||
+                                    a.municipality ||
+                                    a.town;
+
+                                const desa_kelurahan =
+                                    a.village ||
+                                    a.neighbourhood ||
+                                    a.suburb ||
+                                    a.hamlet;
+
+                                // console.log({
+                                //     provinsi: provinsi,
+                                //     kabupaten_kota: kabupaten_kota,
+                                //     kecamatan: kecamatan,
+                                //     desa: desa,
+                                //     dusun: dusun,
+                                // });
+
+                                document.getElementById(
+                                    "kabupatenInput",
+                                ).value = kabupaten_kota;
+                                document.getElementById(
+                                    "kecamatanInput",
+                                ).value = kecamatan;
+                                document.getElementById("desaInput").value =
+                                    desa_kelurahan;
+                            });
+                    });
                 },
             }).addTo(map);
 
